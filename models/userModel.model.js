@@ -1,5 +1,5 @@
 module.exports = mongoose => {
-    var userSchema = mongoose.Schema({
+    let userSchema = mongoose.Schema({
         name: {
             type: String,
             required: true,
@@ -18,7 +18,15 @@ module.exports = mongoose => {
         },
         profile: {
             type: String,
-            default: "default.png"
+            default: null
+        },
+        phone: {
+            type: String,
+            default: null
+        },
+        city: {
+            type: String,
+            default: null
         }
     } , { versionKey: false })
 

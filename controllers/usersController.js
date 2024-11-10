@@ -1,5 +1,6 @@
 const { User } = require("../models");
 const sharp = require("sharp");
+const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const brcypt = require("bcrypt");
 const multer = require("multer");
@@ -35,7 +36,7 @@ exports.resizeUserPhoto = async (req , res , next) => {
 
         next();
     } else {
-        const user = await User.findById(req.body.id);
+        let user = await User.findById(req.body.id);
 
         const token = createToken(user._id);
 
@@ -45,22 +46,23 @@ exports.resizeUserPhoto = async (req , res , next) => {
         })
     }
 }
-//
 
 exports.register = async (req , res , next) => {
     try {
         const { name , email , password } = req.body;
 
         const emailCheck = await User.findOne({ email });
-        if(emailCheck)
+        if(emailCheck) {
             return res.status(409).json({
                 status: "un success",
                 errors: {
                     email: "Email already exists."
                 }
             })
+        }
     
         const hashPassword = await brcypt.hash(password , 10);
+
         const user = await User.create({
             name,
             email,
@@ -117,7 +119,7 @@ exports.login = async (req , res , next) => {
 exports.setProfile = async (req , res , next) => {
     try {
         const token = req.headers["authorization"];
-        
+
         if(token) {
             jwt.verify(token , "setProfile" , async (err, decodedToken) => {
                 if (err) {
@@ -128,10 +130,76 @@ exports.setProfile = async (req , res , next) => {
                 } else {
                     const user = await User.findByIdAndUpdate(decodedToken.id , { profile: req.file.filename });
 
+
                     const token = createToken(user._id);
+
 
                     return res.status(200).json({
                         token,
+                        status: "success"
+                    })
+                }
+            })
+        } else {
+            return res.status(401).json({
+                status: "un success",
+                message: "Unauthorized",
+            })
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+exports.resizeChangeUserPhoto = async (req , res , next) => {
+    if(req.file) {
+        if(req.body.id === "undefined") next();
+
+        req.file.filename = `user-${req.body.id}.jpeg`;
+
+        await sharp(req.file.buffer)
+            .resize(500 , 500)
+            .toFormat("jpeg")
+            .jpeg({ quality: 90 })
+            .toFile(`images/${req.file.filename}`)
+
+        next();
+    } else {
+        let user = await User.findByIdAndUpdate(req.body.id , { profile: null });
+
+        user = user.toObject();
+
+        if(user.profile) {
+            fs.unlinkSync(`images/${user.profile}`);
+        }
+
+        delete user.password;
+
+        return res.status(200).json({
+            user,
+            status: "success"
+        })
+    }
+}
+
+exports.changeProfile = async (req , res , next) => {
+    try {
+        const token = req.headers["authorization"];
+
+        if(token) {
+            jwt.verify(token , process.env.TOKEN_KEY , async (err, decodedToken) => {
+                if (err) {
+                    return res.status(401).json({
+                        status: "un success",
+                        message: "Unauthorized",
+                    })
+                } else {
+                    let user = await User.findByIdAndUpdate(decodedToken.id , { profile: req.file.filename });
+
+                    user = user.toObject();
+                    delete user.password;
+                    return res.status(200).json({
+                        user,
                         status: "success"
                     })
                 }

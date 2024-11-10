@@ -21,9 +21,15 @@ db.mongoose
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+
+const corsOptions ={
+    origin:'http://localhost:3000',
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
 
 app.use(express.static(__dirname + "/"));
 app.use("/api/auth" , userRoutes);
