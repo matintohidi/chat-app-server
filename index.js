@@ -41,5 +41,5 @@ app.use(express.static(__dirname + "/"));
 app.use("/api/auth", userRoutes);
 
 app.listen(process.env.NODE_DOCKER_PORT, () => {
-  console.log("Server is running successfully(Development) on port 5000");
+  console.log("Server is running successfully(Development) on port 5000.");
 });
