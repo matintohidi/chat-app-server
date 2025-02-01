@@ -5,6 +5,7 @@ import dbConfig from './database/db.config';
 import { UserModule } from 'src/app/user/user.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AuthModule } from 'src/app/auth/auth.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { join } from 'path';
       serveRoot: '/swagger',
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
