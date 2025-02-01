@@ -1,4 +1,4 @@
-FROM node:18-bullseye
+FROM node:20-bullseye
 
 # Set the working directory
 WORKDIR /chat-app-server
@@ -12,8 +12,11 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Build the NestJS application
+RUN npm run build
+
 # Expose the port the app runs on
-EXPOSE 5000
+EXPOSE 1338
 
 # Command to run the application
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:prod"]
