@@ -26,10 +26,7 @@ export class AuthService {
     return user;
   }
 
-  async register(
-    data: RegisterUserDto,
-    createdBy: UserModel,
-  ): Promise<UserModel> {
+  async register(data: RegisterUserDto): Promise<UserModel> {
     const existUser = await this.userRepository.findOne({
       $or: [{ email: data.email }, { phoneNumber: data.phoneNumber }],
     });
@@ -42,10 +39,7 @@ export class AuthService {
 
     const password = await bcrypt.hash(data.password, 10);
 
-    const user = await this.userService.create(
-      { ...data, password },
-      createdBy,
-    );
+    const user = await this.userService.create({ ...data, password });
 
     return user;
   }

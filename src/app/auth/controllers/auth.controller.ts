@@ -28,11 +28,8 @@ export class AuthController {
 
   @StandardApi({ type: UserModel })
   @Post('/register')
-  async register(
-    @Body() body: RegisterUserDto,
-    @GetUser() user: UserModel,
-  ): Promise<UserModel> {
-    const result = await this.authService.register(body, user);
+  async register(@Body() body: RegisterUserDto): Promise<UserModel> {
+    const result = await this.authService.register(body);
 
     return result;
   }

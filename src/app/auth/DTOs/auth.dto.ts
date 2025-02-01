@@ -3,7 +3,7 @@ import { UserModel } from 'src/app/user/DTOs/user.dto';
 import { User } from 'src/app/user/schemas/user.schema';
 import { IsStringField } from 'src/common/decorators';
 
-export class RegisterUserDto extends OmitType(User, ['_id']) {
+export class RegisterUserDto extends OmitType(User, ['_id', 'accessLevel']) {
   @IsStringField({ required: true })
   name: string;
 
