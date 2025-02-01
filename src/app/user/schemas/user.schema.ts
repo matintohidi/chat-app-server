@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Basic } from 'src/app/base/basic.schema';
-import { IsStringField } from 'src/common/decorators';
+import { ApiAccessLevel } from 'src/app/auth/decorators/permission.decorator';
+import { IsEnumField, IsStringField } from 'src/common/decorators';
 
 export type UserDocument = User & Document;
 
@@ -15,16 +16,20 @@ export class User extends Basic {
   email: string;
 
   @IsStringField({ required: true })
+  @Prop({ required: true, type: String, unique: true })
+  phoneNumber: string;
+
+  @IsStringField({ required: true })
   @Prop({ required: true, type: String, minlength: 8 })
   password: string;
+
+  @IsEnumField({ type: ApiAccessLevel })
+  @Prop({ type: String, enum: ApiAccessLevel, default: ApiAccessLevel.USER })
+  accessLevel: ApiAccessLevel;
 
   @IsStringField()
   @Prop({ type: String, default: null })
   profile?: string;
-
-  @IsStringField()
-  @Prop({ type: String, default: null })
-  phone?: string;
 
   @IsStringField()
   @Prop({ type: String, default: null })
