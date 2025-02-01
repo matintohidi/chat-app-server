@@ -1,4 +1,5 @@
 import { OmitType } from '@nestjs/swagger';
+import { UserModel } from 'src/app/user/DTOs/user.dto';
 import { User } from 'src/app/user/schemas/user.schema';
 import { IsStringField } from 'src/common/decorators';
 
@@ -33,4 +34,6 @@ export class LoginUserDto {
 export class LoginUserModel {
   @IsStringField({ required: true })
   token: string;
+
+  user: UserModel;
 }

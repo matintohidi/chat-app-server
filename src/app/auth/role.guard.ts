@@ -5,8 +5,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ApiAccessLevel } from 'src/app/auth/decorators/permission.decorator';
-import { UserDocument } from 'src/app/user/schemas/user.schema';
+import { ApiAccessLevel } from 'src/app/auth/enum/permission.enum';
+import { UserModel } from 'src/app/user/DTOs/user.dto';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -27,7 +27,8 @@ export class RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const user: UserDocument = request.user;
+
+    const user: UserModel = request.user;
 
     if (!permissions.includes(user.accessLevel as any)) {
       throw new ForbiddenException('access level is not correct');

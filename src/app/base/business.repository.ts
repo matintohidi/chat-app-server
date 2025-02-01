@@ -4,14 +4,15 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { isEmpty, isUndefined, omitBy } from 'lodash';
-import { UserDocument } from 'src/app/user/schemas/user.schema';
-import { Model, FilterQuery } from 'mongoose';
+import { Model, FilterQuery, Types } from 'mongoose';
+import { Basic } from 'src/app/base/basic.schema';
+import { UserModel } from 'src/app/user/DTOs/user.dto';
 
 export interface CustomSaveOptions {
-  user?: UserDocument;
+  user?: UserModel;
 }
 
-export class BusinessRepository<Schema> {
+export class BusinessRepository<Schema extends Basic> {
   constructor(private readonly model: Model<Schema>) {}
 
   async isExistOrFail(optionsOrConditions: FilterQuery<Schema>) {
@@ -24,7 +25,7 @@ export class BusinessRepository<Schema> {
   async findOne(
     optionsOrConditions: FilterQuery<Schema>,
   ): Promise<Schema | null> {
-    const result = await this.model.findOne(optionsOrConditions.where).exec();
+    const result = await this.model.findOne(optionsOrConditions).exec();
 
     return result;
   }
@@ -52,20 +53,21 @@ export class BusinessRepository<Schema> {
     options?: CustomSaveOptions,
   ): Promise<Schema> {
     if (isEmpty(data)) {
-      throw new InternalServerErrorException();
+      throw new BadRequestException();
     }
+
     const clearedData = omitBy(data, isUndefined);
 
     const savedEntity = await this.model.create({
+      createdById: options.user ? options.user._id : null,
       ...clearedData,
-      createdBy: options.user ? options.user._id : null,
     });
 
-    return await this.findOne({ where: { _id: savedEntity.id } });
+    return await this.findOne({ _id: savedEntity._id });
   }
 
   async updateById(
-    id: string,
+    id: Types.ObjectId,
     data: Partial<Schema>,
     options?: CustomSaveOptions,
   ): Promise<Schema> {
@@ -82,14 +84,18 @@ export class BusinessRepository<Schema> {
     await this.model
       .findByIdAndUpdate(id, {
         ...clearedData,
-        createdBy: options.user ? options.user._id : null,
+        updatedById: options.user ? options.user._id : null,
+        updatedAt: new Date(),
       })
       .exec();
 
-    return await this.findOne({ where: { _id: id } });
+    return await this.findOne({ _id: id });
   }
 
-  async softDelete(id: string, options: CustomSaveOptions = {}): Promise<void> {
+  async softDelete(
+    id: Types.ObjectId,
+    options: CustomSaveOptions = {},
+  ): Promise<void> {
     if (options.user) {
       await this.model
         .findByIdAndUpdate(id, {
@@ -97,6 +103,7 @@ export class BusinessRepository<Schema> {
         })
         .exec();
     }
-    await this.model.findByIdAndUpdate(id, { deleted: true }).exec();
+
+    await this.model.findByIdAndUpdate(id, { deletedAt: new Date() }).exec();
   }
 }

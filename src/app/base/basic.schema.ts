@@ -1,5 +1,5 @@
 import { Prop, Schema } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { IsDateField, IsNumberField } from 'src/common/decorators';
 
 export type BasicDocument = Basic & Document;
@@ -7,16 +7,16 @@ export type BasicDocument = Basic & Document;
 @Schema({ versionKey: false, timestamps: true })
 export class Basic extends Document {
   @IsNumberField()
-  @Prop({ required: false, type: Number, default: null })
-  createdById?: number; // reference to userId
+  @Prop({ required: false, type: Types.ObjectId, default: null })
+  createdById?: Types.ObjectId; // reference to userId
 
   @IsNumberField()
-  @Prop({ required: false, type: Number, default: null })
-  updatedById?: number; // reference to userId
+  @Prop({ required: false, type: Types.ObjectId, default: null })
+  updatedById?: Types.ObjectId; // reference to userId
 
   @IsNumberField()
-  @Prop({ required: false, type: Number, default: null })
-  deletedById?: number; // reference to userId
+  @Prop({ required: false, type: Types.ObjectId, default: null })
+  deletedById?: Types.ObjectId; // reference to userId
 
   @IsDateField()
   @Prop({ required: true, type: Date, default: Date.now })

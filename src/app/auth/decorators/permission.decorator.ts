@@ -1,9 +1,8 @@
 import { SetMetadata, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiAccessLevel } from 'src/app/auth/enum/permission.enum';
 import { RolesGuard } from 'src/app/auth/role.guard';
-
-export const PermissionMetDataKey = 'LevelPermissionMetDataKey';
 
 interface ApiPermissionParam {
   autoFill?: boolean;
@@ -12,12 +11,6 @@ interface ApiPermissionParam {
 }
 
 export const ApiPermissionMetaDataKey = 'ApiPermissionMetaDataKey';
-
-export enum ApiAccessLevel {
-  ADMIN = 'admin',
-  USER = 'user',
-  ALL = 'all',
-}
 
 export function ApiPermission(
   level: ApiAccessLevel[] = [],
@@ -35,7 +28,6 @@ export function ApiPermission(
 
     ApiBearerAuth()(target, key, descriptor);
     SetMetadata('permission', level)(target, key, descriptor);
-    SetMetadata(PermissionMetDataKey, level)(target, key, descriptor);
     UseGuards(AuthGuard('jwt'), RolesGuard)(target, key, descriptor);
   };
 }

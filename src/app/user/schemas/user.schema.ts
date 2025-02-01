@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiAccessLevel } from 'src/app/auth/enum/permission.enum';
 import { Basic } from 'src/app/base/basic.schema';
-import { ApiAccessLevel } from 'src/app/auth/decorators/permission.decorator';
 import { IsEnumField, IsStringField } from 'src/common/decorators';
 
 export type UserDocument = User & Document;
