@@ -7,7 +7,14 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { EnsureIsArray } from 'src/lib/utils';
+
+function EnsureIsArray(input: unknown) {
+  if (Array.isArray(input)) {
+    return input;
+  } else if (!!input) {
+    return [input];
+  }
+}
 
 function getPropMetaData(
   params: { type?: any; isArray?: boolean; [k: string]: any },

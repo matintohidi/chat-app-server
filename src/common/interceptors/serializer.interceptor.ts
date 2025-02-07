@@ -40,8 +40,6 @@ export class CustomSerializerInterceptor implements NestInterceptor {
     payload: any | any[],
     options: ClassTransformOptions,
   ): any | any[] {
-    //
-
     let data = plainToInstance(type, payload, {
       ...options,
     });
@@ -53,7 +51,7 @@ export class CustomSerializerInterceptor implements NestInterceptor {
     return data;
   }
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(_: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map(async (data: any) => {
         data = await data;

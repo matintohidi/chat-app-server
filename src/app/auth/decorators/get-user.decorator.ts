@@ -5,7 +5,7 @@ import { UserModel } from 'src/app/user/DTOs/user.dto';
 export const GetUser = createParamDecorator(
   (_, ctx: ExecutionContext): UserModel => {
     const req = ctx.switchToHttp().getRequest();
-    // console.log(req);
+
     return req.user;
   },
 );

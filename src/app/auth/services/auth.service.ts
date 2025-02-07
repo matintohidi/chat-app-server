@@ -11,6 +11,7 @@ import { UserService } from 'src/app/user/services/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserModel } from 'src/app/user/DTOs/user.dto';
 import { Types } from 'mongoose';
+import { JwtPayload } from 'src/app/auth/DTOs/jwt.dto';
 
 @Injectable()
 export class AuthService {
@@ -53,10 +54,12 @@ export class AuthService {
       throw new BadRequestException(ErrorCode.PasswordIsNotMatch);
     }
 
-    const token = await this.jwtService.signAsync({
-      sub: user._id,
+    const payload: JwtPayload = {
+      sub: user._id as string,
       email: user.email,
-    });
+    };
+
+    const token = await this.jwtService.signAsync(payload);
 
     return { token, user };
   }

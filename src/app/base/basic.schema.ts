@@ -1,9 +1,6 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { IsDateField, IsNumberField } from 'src/common/decorators';
-
-export type BasicDocument = Basic & Document;
-
 @Schema({ versionKey: false, timestamps: true })
 export class Basic extends Document {
   @IsNumberField()

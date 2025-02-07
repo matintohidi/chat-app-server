@@ -12,7 +12,7 @@ const { JWT_SECRET, EXPIRES_IN } = process.env;
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       global: true,
-      secret: JWT_SECRET || 'secret',
+      secret: JWT_SECRET || '',
       signOptions: { expiresIn: EXPIRES_IN || '1d' },
     }),
     UserModule,

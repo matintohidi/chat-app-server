@@ -12,7 +12,7 @@ import { CustomApiOperation } from './custom-api-operation.decorator';
 import { StandardSerializer } from './serializer.decorator';
 import { StandardApiResponse } from './standard-api-res.decorator';
 
-interface StandardApiInterface {
+export interface StandardApiInterface {
   type?: any;
   resTypeOption?: ClassTransformOptions;
   statusCode?: HttpStatus;
