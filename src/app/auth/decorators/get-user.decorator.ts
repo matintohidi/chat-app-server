@@ -1,11 +1,15 @@
-import { ExecutionContext } from '@nestjs/common/interfaces/features/execution-context.interface';
-import { createParamDecorator } from '@nestjs/common';
-import { UserModel } from 'src/app/user/DTOs/user.dto';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { UserDocument } from 'src/app/user/schemas/user.schema';
 
-export const GetUser = createParamDecorator(
-  (_, ctx: ExecutionContext): UserModel => {
-    const req = ctx.switchToHttp().getRequest();
+export const GetUser = createParamDecorator<
+  keyof UserDocument | undefined,
+  ExecutionContext
+>((data, ctx) => {
+  const request = ctx.switchToHttp().getRequest();
+  const user = request.user;
 
-    return req.user;
-  },
-);
+  return typeof data === 'undefined' ? user : user[data];
+});
+
+export type GetUser<Prop extends keyof UserDocument | undefined = undefined> =
+  Prop extends undefined ? UserDocument : UserDocument[Prop];

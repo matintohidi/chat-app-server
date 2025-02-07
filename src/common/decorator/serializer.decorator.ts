@@ -1,7 +1,7 @@
 import { UseInterceptors, applyDecorators } from '@nestjs/common';
 import { ClassConstructor, ClassTransformOptions } from 'class-transformer';
 
-import { CustomSerializerInterceptor } from './interceptors/serializer.interceptor';
+import { CustomSerializerInterceptor } from '../interceptors/serializer.interceptor';
 
 export const StandardSerializer = (
   type: ClassConstructor<unknown>,

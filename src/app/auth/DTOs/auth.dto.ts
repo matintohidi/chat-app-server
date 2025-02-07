@@ -1,9 +1,10 @@
-import { OmitType } from '@nestjs/swagger';
 import { UserModel } from 'src/app/user/DTOs/user.dto';
-import { User } from 'src/app/user/schemas/user.schema';
-import { IsStringField } from 'src/common/decorators';
+import {
+  IsReferenceField,
+  IsStringField,
+} from 'src/common/decorator/decorators';
 
-export class RegisterUserDto extends OmitType(User, ['_id', 'accessLevel']) {
+export class RegisterUserDto {
   @IsStringField({ required: true })
   name: string;
 
@@ -16,10 +17,10 @@ export class RegisterUserDto extends OmitType(User, ['_id', 'accessLevel']) {
   @IsStringField({ required: true })
   password: string;
 
-  @IsStringField({ required: false })
+  @IsStringField()
   profile?: string;
 
-  @IsStringField({ required: false })
+  @IsStringField()
   city?: string;
 }
 
@@ -35,5 +36,6 @@ export class LoginUserModel {
   @IsStringField({ required: true })
   token: string;
 
+  @IsReferenceField({ type: UserModel })
   user: UserModel;
 }

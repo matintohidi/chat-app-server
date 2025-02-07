@@ -2,12 +2,15 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
 import { ApiAccessLevel } from 'src/app/auth/enum/permission.enum';
 import { Basic } from 'src/app/base/basic.schema';
-import { IsEnumField, IsStringField } from 'src/common/decorators';
+import { IsEnumField, IsStringField } from 'src/common/decorator/decorators';
 
 export type UserDocument = User & Document;
 
 @Schema({ versionKey: false })
 export class User extends Basic {
+  @IsStringField()
+  id?: string;
+
   @IsStringField({ required: true })
   @Prop({ required: true, type: String, minlength: 3, maxlength: 20 })
   name: string;

@@ -1,4 +1,4 @@
-import { IsEnumField } from 'src/common/decorators';
+import { IsEnumField } from 'src/common/decorator/decorators';
 
 // enum values in persian
 export enum ErrorCode {

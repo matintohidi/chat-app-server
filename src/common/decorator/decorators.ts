@@ -1,11 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Transform, Type } from 'class-transformer';
 import {
+  IsArray,
   IsBoolean,
   IsDate,
   IsNumber,
   IsOptional,
   IsString,
+  ValidateNested,
 } from 'class-validator';
 
 function EnsureIsArray(input: unknown) {
@@ -162,6 +164,30 @@ export function IsStringField(params?: {
     Expose()(target, propertyKey);
 
     if (!params?.required) {
+      IsOptional()(target, propertyKey);
+    }
+  };
+}
+
+export function IsReferenceField(params?: {
+  type?: any;
+  isArray?: boolean;
+  required?: boolean;
+}) {
+  return function (target: any, propertyKey: string): void {
+    const { isArray, type } = getPropMetaData(params, target, propertyKey);
+    const required = params?.required ?? false;
+
+    ApiProperty({ type, isArray, required })(target, propertyKey);
+    Type(() => type)(target, propertyKey);
+    Expose()(target, propertyKey);
+
+    if (isArray) {
+      IsArray()(target, propertyKey);
+      ValidateNested()(target, propertyKey);
+    }
+
+    if (!required) {
       IsOptional()(target, propertyKey);
     }
   };

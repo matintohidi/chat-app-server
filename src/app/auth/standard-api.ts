@@ -1,5 +1,5 @@
 import { UserModel } from 'src/app/user/DTOs/user.dto';
-import { StandardApiInterface } from '../../common/standard-api.decorator';
+import { StandardApiInterface } from '../../common/decorator/standard-api.decorator';
 import { LoginUserModel } from 'src/app/auth/DTOs/auth.dto';
 
 export const Me: StandardApiInterface = {
