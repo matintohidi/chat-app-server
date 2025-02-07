@@ -4,14 +4,14 @@ import {
   LoginUserDto,
   LoginUserModel,
   RegisterUserDto,
-} from 'src/app/auth/DTOs/auth.dto';
+} from 'src/app/auth/dto/auth.dto';
 import { ErrorCode } from 'src/common/enums/error.enum';
 import * as bcrypt from 'bcrypt';
 import { UserService } from 'src/app/user/services/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { UserModel } from 'src/app/user/DTOs/user.dto';
+import { UserModel } from 'src/app/user/dto/user.dto';
 import { Types } from 'mongoose';
-import { JwtPayload } from 'src/app/auth/DTOs/jwt.dto';
+import { JwtPayload } from 'src/app/auth/dto/jwt.dto';
 
 @Injectable()
 export class AuthService {

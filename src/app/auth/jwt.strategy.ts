@@ -1,8 +1,8 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UserModel } from 'src/app/user/DTOs/user.dto';
-import { JwtPayload } from 'src/app/auth/DTOs/jwt.dto';
+import { UserModel } from 'src/app/user/dto/user.dto';
+import { JwtPayload } from 'src/app/auth/dto/jwt.dto';
 import { UserRepository } from 'src/app/user/repositories/user.repository';
 const { JWT_SECRET } = process.env;
 

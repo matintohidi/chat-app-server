@@ -6,6 +6,9 @@ import { UserModule } from 'src/app/user/user.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from 'src/app/auth/auth.module';
+import { MinioModule } from 'src/plugins/minio/minio.module';
+import { minioConfig } from 'src/common/config/minio.config';
+import { MediaModule } from 'src/app/media/media.module';
 
 @Module({
   imports: [
@@ -32,6 +35,8 @@ import { AuthModule } from 'src/app/auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    MinioModule.forRoot(minioConfig),
+    MediaModule,
   ],
   controllers: [],
   providers: [],

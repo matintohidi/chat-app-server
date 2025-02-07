@@ -3,13 +3,13 @@ import {
   LoginUserDto,
   LoginUserModel,
   RegisterUserDto,
-} from 'src/app/auth/DTOs/auth.dto';
+} from 'src/app/auth/dto/auth.dto';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { UserModel } from 'src/app/user/DTOs/user.dto';
+import { UserModel } from 'src/app/user/dto/user.dto';
 import { BusinessController } from 'src/common/decorator/business-controller.decorator';
 import { GetUser } from 'src/app/auth/decorators/get-user.decorator';
 import { StandardApi } from 'src/common/decorator/standard-api.decorator';
-import { ApiAccessLevel } from 'src/app/auth/enum/permission.enum';
+import { ApiAccessLevel } from 'src/app/auth/enums/permission.enum';
 import { ApiPermission } from 'src/app/auth/decorators/permission.decorator';
 import { Types } from 'mongoose';
 import { Login, Me, Register } from 'src/app/auth/standard-api';

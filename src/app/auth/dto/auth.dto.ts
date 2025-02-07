@@ -1,4 +1,4 @@
-import { UserModel } from 'src/app/user/DTOs/user.dto';
+import { UserModel } from 'src/app/user/dto/user.dto';
 import {
   IsReferenceField,
   IsStringField,

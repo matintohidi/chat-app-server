@@ -6,7 +6,7 @@ import {
 import { isEmpty, isUndefined, omitBy } from 'lodash';
 import { Model, FilterQuery, Types } from 'mongoose';
 import { Basic } from 'src/app/base/basic.schema';
-import { UserModel } from 'src/app/user/DTOs/user.dto';
+import { UserModel } from 'src/app/user/dto/user.dto';
 
 export interface CustomSaveOptions {
   user?: UserModel;
