@@ -5,8 +5,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ApiAccessLevel } from 'src/app/auth/enum/permission.enum';
-import { UserModel } from 'src/app/user/DTOs/user.dto';
+import { ApiAccessLevel } from 'src/app/auth/enums/permission.enum';
+import { UserModel } from 'src/app/user/dto/user.dto';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

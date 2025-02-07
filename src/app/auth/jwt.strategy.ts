@@ -1,9 +1,9 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { UserModel } from 'src/app/user/DTOs/user.dto';
-import { JwtPayload } from 'src/app/auth/DTOs/jwt.dto';
+import { JwtPayload } from 'src/app/auth/dto/jwt.dto';
 import { UserRepository } from 'src/app/user/repositories/user.repository';
+import { User } from 'src/app/user/schemas/user.schema';
 const { JWT_SECRET } = process.env;
 
 @Injectable()
@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(data: JwtPayload): Promise<UserModel> {
+  async validate(data: JwtPayload): Promise<User> {
     const user = await this.userRepository.findOne({
       id: data.sub,
       email: data.email,

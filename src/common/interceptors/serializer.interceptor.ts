@@ -8,6 +8,7 @@ import {
 import { ClassTransformOptions } from '@nestjs/common/interfaces/external/class-transform-options.interface';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { isArray, isEmpty } from 'lodash';
+import { Types } from 'mongoose';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -40,6 +41,23 @@ export class CustomSerializerInterceptor implements NestInterceptor {
     payload: any | any[],
     options: ClassTransformOptions,
   ): any | any[] {
+    // To convert ObjectId to string
+    if (Array.isArray(payload)) {
+      payload.map((item) => {
+        Object.keys(item).forEach((key) => {
+          if (item[key] instanceof Types.ObjectId) {
+            item[key] = item[key].toString();
+          }
+        });
+      });
+    } else {
+      Object.keys(payload).forEach((key) => {
+        if (payload[key] instanceof Types.ObjectId) {
+          payload[key] = payload[key].toString();
+        }
+      });
+    }
+
     let data = plainToInstance(type, payload, {
       ...options,
     });

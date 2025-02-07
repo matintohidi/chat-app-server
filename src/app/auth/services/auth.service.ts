@@ -4,14 +4,14 @@ import {
   LoginUserDto,
   LoginUserModel,
   RegisterUserDto,
-  RegisterUserModel,
-} from 'src/app/auth/DTOs/auth.dto';
+} from 'src/app/auth/dto/auth.dto';
 import { ErrorCode } from 'src/common/enums/error.enum';
 import * as bcrypt from 'bcrypt';
 import { UserService } from 'src/app/user/services/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { UserModel } from 'src/app/user/DTOs/user.dto';
-import { JwtPayload } from 'src/app/auth/DTOs/jwt.dto';
+import { Types } from 'mongoose';
+import { JwtPayload } from 'src/app/auth/dto/jwt.dto';
+import { User } from 'src/app/user/schemas/user.schema';
 
 @Injectable()
 export class AuthService {
@@ -21,13 +21,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async me(userId: string): Promise<UserModel> {
-    const user = await this.userRepository.findOneOrFail({ id: userId });
+  async me(userId: Types.ObjectId): Promise<User> {
+    const user = await this.userRepository.findOneOrFail({ _id: userId });
 
     return user;
   }
 
-  async register(data: RegisterUserDto): Promise<RegisterUserModel> {
+  async register(data: RegisterUserDto): Promise<User> {
     const existUser = await this.userRepository.findOne({
       $or: [{ email: data.email }, { phoneNumber: data.phoneNumber }],
     });
@@ -49,11 +49,13 @@ export class AuthService {
 
     const token = await this.jwtService.signAsync(payload, { expiresIn: '5m' });
 
-    return { token, user };
+    return user;
   }
 
   async login(data: LoginUserDto): Promise<LoginUserModel> {
-    const user = await this.userRepository.findOneOrFail({ email: data.email });
+    const user = await this.userRepository.findUserByEmailWithPassword(
+      data.email,
+    );
 
     const isPasswordMatch = await bcrypt.compare(data.password, user.password);
 

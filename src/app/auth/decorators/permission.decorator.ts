@@ -1,7 +1,7 @@
 import { SetMetadata, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { ApiAccessLevel } from 'src/app/auth/enum/permission.enum';
+import { ApiAccessLevel } from 'src/app/auth/enums/permission.enum';
 import { RolesGuard } from 'src/app/auth/role.guard';
 
 interface ApiPermissionParam {

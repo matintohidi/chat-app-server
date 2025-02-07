@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
-import { ApiAccessLevel } from 'src/app/auth/enum/permission.enum';
+import { ApiAccessLevel } from 'src/app/auth/enums/permission.enum';
 import { Basic } from 'src/app/base/basic.schema';
 import { IsEnumField, IsStringField } from 'src/common/decorator/decorators';
 
@@ -25,7 +25,7 @@ export class User extends Basic {
 
   @IsStringField({ required: true })
   @Exclude()
-  @Prop({ required: true, type: String, minlength: 8 })
+  @Prop({ required: true, type: String, minlength: 8, select: false })
   password: string;
 
   @IsEnumField({ type: ApiAccessLevel })
