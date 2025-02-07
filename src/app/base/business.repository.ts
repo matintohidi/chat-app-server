@@ -59,11 +59,11 @@ export class BusinessRepository<Schema extends Basic> {
     const clearedData = omitBy(data, isUndefined);
 
     const savedEntity = await this.model.create({
-      createdById: options.user ? options.user._id : null,
+      createdById: options.user ? options.user.id : null,
       ...clearedData,
     });
 
-    return await this.findOne({ _id: savedEntity._id });
+    return await this.findOne({ id: savedEntity.id });
   }
 
   async updateById(
@@ -84,12 +84,12 @@ export class BusinessRepository<Schema extends Basic> {
     await this.model
       .findByIdAndUpdate(id, {
         ...clearedData,
-        updatedById: options.user ? options.user._id : null,
+        updatedById: options.user ? options.user.id : null,
         updatedAt: new Date(),
       })
       .exec();
 
-    return await this.findOne({ _id: id });
+    return await this.findOne({ id: id });
   }
 
   async softDelete(
@@ -99,7 +99,7 @@ export class BusinessRepository<Schema extends Basic> {
     if (options.user) {
       await this.model
         .findByIdAndUpdate(id, {
-          deletedById: options.user ? options.user._id : null,
+          deletedById: options.user ? options.user.id : null,
         })
         .exec();
     }

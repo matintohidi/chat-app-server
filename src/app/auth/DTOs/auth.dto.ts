@@ -39,3 +39,11 @@ export class LoginUserModel {
   @IsReferenceField({ type: UserModel })
   user: UserModel;
 }
+
+export class RegisterUserModel {
+  @IsStringField({ required: true })
+  token: string;
+
+  @IsReferenceField({ type: UserModel })
+  user: UserModel;
+}

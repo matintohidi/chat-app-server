@@ -3,6 +3,7 @@ import {
   LoginUserDto,
   LoginUserModel,
   RegisterUserDto,
+  RegisterUserModel,
 } from 'src/app/auth/DTOs/auth.dto';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { UserModel } from 'src/app/user/DTOs/user.dto';
@@ -11,7 +12,6 @@ import { GetUser } from 'src/app/auth/decorators/get-user.decorator';
 import { StandardApi } from 'src/common/decorator/standard-api.decorator';
 import { ApiAccessLevel } from 'src/app/auth/enum/permission.enum';
 import { ApiPermission } from 'src/app/auth/decorators/permission.decorator';
-import { Types } from 'mongoose';
 import { Login, Me, Register } from 'src/app/auth/standard-api';
 
 @BusinessController('auth')
@@ -22,14 +22,14 @@ export class AuthController {
   @StandardApi(Me)
   @Get('/me')
   async me(@GetUser() user: UserModel): Promise<UserModel> {
-    const result = await this.authService.me(user._id as Types.ObjectId);
+    const result = await this.authService.me(user.id);
 
     return result;
   }
 
   @StandardApi(Register)
   @Post('/register')
-  async register(@Body() body: RegisterUserDto): Promise<UserModel> {
+  async register(@Body() body: RegisterUserDto): Promise<RegisterUserModel> {
     const result = await this.authService.register(body);
 
     return result;
