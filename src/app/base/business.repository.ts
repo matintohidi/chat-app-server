@@ -15,8 +15,9 @@ export interface CustomSaveOptions {
 export class BusinessRepository<Schema extends Basic> {
   constructor(private readonly model: Model<Schema>) {}
 
-  async isExistOrFail(optionsOrConditions: FilterQuery<Schema>) {
+  async isExistOrFail(optionsOrConditions: FilterQuery<Schema>): Promise<void> {
     const count = await this.model.countDocuments(optionsOrConditions.where);
+
     if (count === 0) {
       throw new NotFoundException('is not exist');
     }
@@ -25,9 +26,9 @@ export class BusinessRepository<Schema extends Basic> {
   async findOne(
     optionsOrConditions: FilterQuery<Schema>,
   ): Promise<Schema | null> {
-    const result = await this.model.findOne(optionsOrConditions).exec();
+    const result = await this.model.findOne(optionsOrConditions).lean();
 
-    return result;
+    return result as Schema;
   }
 
   async find(): Promise<Schema[]> {

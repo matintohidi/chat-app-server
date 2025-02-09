@@ -1,52 +1,58 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { Basic } from 'src/app/base/basic.schema';
+import { IsNumberField, IsStringField } from 'src/common/decorator/decorators';
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: true, versionKey: false })
 export class Media extends Basic {
-  @Prop()
-  url?: string;
+  @IsStringField()
+  id?: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  user: Types.ObjectId;
+  @Prop({ required: false, type: Types.ObjectId, default: null })
+  relatedId?: Types.ObjectId;
 
-  @Prop()
-  relatedId?: number;
-
-  @Prop()
-  entity?: string;
-
-  @Prop()
+  @IsStringField()
+  @Prop({ required: false, type: String, default: null })
   downloadLink?: string;
 
-  @Prop({ default: 0 })
+  @IsNumberField()
+  @Prop({ required: false, type: Number, default: 0 })
   downloadSize?: number;
 
-  @Prop()
+  @IsStringField()
+  @Prop({ required: false, type: String, default: null })
   relativeUrl?: string;
 
-  @Prop()
+  @IsStringField()
+  @Prop({ required: false, type: String, default: null })
   bucket?: string;
 
-  @Prop({ required: true })
+  @IsStringField()
+  @Prop({ required: true, type: String })
   fileName: string;
 
-  @Prop()
+  @IsStringField()
+  @Prop({ required: false, type: String, default: null })
   sha256?: string;
 
-  @Prop()
+  @IsStringField()
+  @Prop({ required: false, type: String, default: null })
   md5?: string;
 
-  @Prop()
+  @IsStringField()
+  @Prop({ required: false, type: String, default: null })
   ext?: string;
 
-  @Prop()
+  @IsNumberField()
+  @Prop({ required: false, type: Number, default: 0 })
   size?: number; // in kb
 
-  @Prop()
+  @IsStringField()
+  @Prop({ required: false, type: String, default: null })
   mimetype?: string;
 
-  @Prop()
+  @IsStringField()
+  @Prop({ required: false, type: String, default: null })
   description?: string;
 }
 
