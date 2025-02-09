@@ -23,7 +23,6 @@ export class MediaService {
     const result = await this.mediaRepository.createAndSave(
       {
         ...media,
-        relatedId: user._id as Types.ObjectId,
       },
       { user },
     );
