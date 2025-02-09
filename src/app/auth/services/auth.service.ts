@@ -9,9 +9,9 @@ import { ErrorCode } from 'src/common/enums/error.enum';
 import * as bcrypt from 'bcrypt';
 import { UserService } from 'src/app/user/services/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { UserModel } from 'src/app/user/dto/user.dto';
 import { Types } from 'mongoose';
 import { JwtPayload } from 'src/app/auth/dto/jwt.dto';
+import { User } from 'src/app/user/schemas/user.schema';
 
 @Injectable()
 export class AuthService {
@@ -21,13 +21,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async me(userId: Types.ObjectId): Promise<UserModel> {
+  async me(userId: Types.ObjectId): Promise<User> {
     const user = await this.userRepository.findOneOrFail({ _id: userId });
 
     return user;
   }
 
-  async register(data: RegisterUserDto): Promise<UserModel> {
+  async register(data: RegisterUserDto): Promise<User> {
     const existUser = await this.userRepository.findOne({
       $or: [{ email: data.email }, { phoneNumber: data.phoneNumber }],
     });
@@ -46,7 +46,9 @@ export class AuthService {
   }
 
   async login(data: LoginUserDto): Promise<LoginUserModel> {
-    const user = await this.userRepository.findOneOrFail({ email: data.email });
+    const user = await this.userRepository.findUserByEmailWithPassword(
+      data.email,
+    );
 
     const isPasswordMatch = await bcrypt.compare(data.password, user.password);
 

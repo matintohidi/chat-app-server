@@ -1,4 +1,5 @@
 import { UserModel } from 'src/app/user/dto/user.dto';
+import { User } from 'src/app/user/schemas/user.schema';
 import {
   IsReferenceField,
   IsStringField,
@@ -37,5 +38,5 @@ export class LoginUserModel {
   token: string;
 
   @IsReferenceField({ type: UserModel })
-  user: UserModel;
+  user: User;
 }

@@ -6,10 +6,10 @@ import {
 import { isEmpty, isUndefined, omitBy } from 'lodash';
 import { Model, FilterQuery, Types } from 'mongoose';
 import { Basic } from 'src/app/base/basic.schema';
-import { UserModel } from 'src/app/user/dto/user.dto';
+import { User } from 'src/app/user/schemas/user.schema';
 
 export interface CustomSaveOptions {
-  user?: UserModel;
+  user?: User;
 }
 
 export class BusinessRepository<Schema extends Basic> {
@@ -26,9 +26,9 @@ export class BusinessRepository<Schema extends Basic> {
   async findOne(
     optionsOrConditions: FilterQuery<Schema>,
   ): Promise<Schema | null> {
-    const result = await this.model.findOne(optionsOrConditions).lean();
+    const result = await this.model.findOne(optionsOrConditions);
 
-    return result as Schema;
+    return result;
   }
 
   async find(): Promise<Schema[]> {

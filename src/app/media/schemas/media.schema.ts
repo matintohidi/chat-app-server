@@ -3,28 +3,28 @@ import { Types } from 'mongoose';
 import { Basic } from 'src/app/base/basic.schema';
 import { IsNumberField, IsStringField } from 'src/common/decorator/decorators';
 
-@Schema({ timestamps: true, versionKey: false })
+@Schema({ versionKey: false })
 export class Media extends Basic {
   @IsStringField()
   id?: string;
 
-  @Prop({ required: false, type: Types.ObjectId, default: null })
+  @Prop({ type: Types.ObjectId, default: null })
   relatedId?: Types.ObjectId;
 
   @IsStringField()
-  @Prop({ required: false, type: String, default: null })
+  @Prop({ type: String, default: null })
   downloadLink?: string;
 
   @IsNumberField()
-  @Prop({ required: false, type: Number, default: 0 })
+  @Prop({ type: Number, default: 0 })
   downloadSize?: number;
 
   @IsStringField()
-  @Prop({ required: false, type: String, default: null })
+  @Prop({ type: String, default: null })
   relativeUrl?: string;
 
   @IsStringField()
-  @Prop({ required: false, type: String, default: null })
+  @Prop({ type: String, default: null })
   bucket?: string;
 
   @IsStringField()
@@ -32,27 +32,27 @@ export class Media extends Basic {
   fileName: string;
 
   @IsStringField()
-  @Prop({ required: false, type: String, default: null })
+  @Prop({ type: String, default: null })
   sha256?: string;
 
   @IsStringField()
-  @Prop({ required: false, type: String, default: null })
+  @Prop({ type: String, default: null })
   md5?: string;
 
   @IsStringField()
-  @Prop({ required: false, type: String, default: null })
+  @Prop({ type: String, default: null })
   ext?: string;
 
   @IsNumberField()
-  @Prop({ required: false, type: Number, default: 0 })
+  @Prop({ type: Number, default: 0 })
   size?: number; // in kb
 
   @IsStringField()
-  @Prop({ required: false, type: String, default: null })
+  @Prop({ type: String, default: null })
   mimetype?: string;
 
   @IsStringField()
-  @Prop({ required: false, type: String, default: null })
+  @Prop({ type: String, default: null })
   description?: string;
 }
 

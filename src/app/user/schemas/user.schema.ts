@@ -25,7 +25,7 @@ export class User extends Basic {
 
   @IsStringField({ required: true })
   @Exclude()
-  @Prop({ required: true, type: String, minlength: 8 })
+  @Prop({ required: true, type: String, minlength: 8, select: false })
   password: string;
 
   @IsEnumField({ type: ApiAccessLevel })

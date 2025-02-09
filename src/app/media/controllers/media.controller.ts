@@ -46,8 +46,6 @@ export class MediaController {
       user,
     );
 
-    console.log(result);
-
     return result;
   }
 }
