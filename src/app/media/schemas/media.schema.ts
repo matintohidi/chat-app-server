@@ -3,6 +3,8 @@ import { Types } from 'mongoose';
 import { Basic } from 'src/app/base/basic.schema';
 import { IsNumberField, IsStringField } from 'src/common/decorator/decorators';
 
+export type MediaEntity = 'user' | 'message';
+
 @Schema({ versionKey: false })
 export class Media extends Basic {
   @IsStringField()
@@ -26,6 +28,10 @@ export class Media extends Basic {
   @IsStringField()
   @Prop({ type: String, default: null })
   bucket?: string;
+
+  @IsStringField()
+  @Prop({ type: String, default: null })
+  entity?: MediaEntity;
 
   @IsStringField()
   @Prop({ required: true, type: String })

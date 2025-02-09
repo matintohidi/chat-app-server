@@ -1,4 +1,5 @@
 import { BasicModel } from 'src/app/base/basic.dto';
+import { MediaEntity } from 'src/app/media/schemas/media.schema';
 import { IsNumberField, IsStringField } from 'src/common/decorator/decorators';
 
 export class UploadQuery {
@@ -21,6 +22,9 @@ export class MediaModel extends BasicModel {
 
   @IsStringField()
   bucket?: string;
+
+  @IsStringField()
+  entity?: MediaEntity;
 
   @IsStringField()
   fileName: string;
