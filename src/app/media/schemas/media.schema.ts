@@ -6,7 +6,7 @@ import { IsNumberField, IsStringField } from 'src/common/decorator/decorators';
 @Schema({ versionKey: false })
 export class Media extends Basic {
   @IsStringField()
-  id?: string;
+  url?: string;
 
   @Prop({ type: Types.ObjectId, default: null })
   relatedId?: Types.ObjectId;

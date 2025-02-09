@@ -5,7 +5,6 @@ import { User } from 'src/app/user/schemas/user.schema';
 import { MediaLoaderService } from 'src/app/media/services/loader.service';
 import { FilterQuery, Types } from 'mongoose';
 import { CustomSaveOptions } from 'src/app/base/business.repository';
-import { MediaModel } from 'src/app/media/dto/media.dto';
 
 @Injectable()
 export class MediaService {
@@ -14,7 +13,7 @@ export class MediaService {
     private mediaLoaderService: MediaLoaderService,
   ) {}
 
-  async save(media: Partial<Media>, user: User): Promise<MediaModel> {
+  async save(media: Partial<Media>, user: User): Promise<Media> {
     const isExist = await this.findOne({ relativeUrl: media.relativeUrl });
 
     if (isExist) {
@@ -34,7 +33,7 @@ export class MediaService {
     return result;
   }
 
-  async findOne(input: FilterQuery<Media>): Promise<MediaModel | null> {
+  async findOne(input: FilterQuery<Media>): Promise<Media | null> {
     const media = await this.mediaRepository.findOne(input);
 
     if (media) {

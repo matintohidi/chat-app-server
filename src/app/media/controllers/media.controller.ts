@@ -12,6 +12,7 @@ import { Bucket } from 'src/plugins/minio/enums/minio.enum';
 import { ApiFile } from 'src/plugins/minio/decorators/api-file.decorator';
 import { MediaModel, UploadQuery } from 'src/app/media/dto/media.dto';
 import { ApiAccessLevel } from 'src/app/auth/enums/permission.enum';
+import { Media } from 'src/app/media/schemas/media.schema';
 
 @BusinessController('media')
 export class MediaController {
@@ -30,7 +31,7 @@ export class MediaController {
     @GetUser() user: User,
     @UploadedFile() file: Express.Multer.File,
     @Query() query: UploadQuery,
-  ): Promise<MediaModel> {
+  ): Promise<Media> {
     const uploadedFile = await this.minioService.upload(
       {
         bucket: Bucket.Storage,

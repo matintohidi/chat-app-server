@@ -8,6 +8,9 @@ export class UploadQuery {
 
 export class MediaModel extends BasicModel {
   @IsStringField()
+  relatedId?: string;
+
+  @IsStringField()
   downloadLink?: string;
 
   @IsNumberField()

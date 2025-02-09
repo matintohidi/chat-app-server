@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MediaModel } from 'src/app/media/dto/media.dto';
+import { Media } from 'src/app/media/schemas/media.schema';
 import { API_URL, NODE_ENV } from 'src/configs/app.config';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class MediaLoaderService {
     return urlPrefix + relativeUrl;
   }
 
-  baseUrlHandler(media: MediaModel) {
+  baseUrlHandler(media: Media) {
     const relativeUrl = media.relativeUrl;
 
     const url = this.urlHandler(relativeUrl);
