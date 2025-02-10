@@ -42,3 +42,8 @@ export class User extends Basic {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+// UserSchema.pre(/^find/, function (next) {
+//   this.$where = { deletedAt: null };
+//   next();
+// });

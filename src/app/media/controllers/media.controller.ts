@@ -10,9 +10,9 @@ import { MinioService } from 'src/plugins/minio/services/minio.service';
 import { User } from 'src/app/user/schemas/user.schema';
 import { Bucket } from 'src/plugins/minio/enums/minio.enum';
 import { ApiFile } from 'src/plugins/minio/decorators/api-file.decorator';
-import { MediaModel, UploadQuery } from 'src/app/media/dto/media.dto';
-import { ApiAccessLevel } from 'src/app/auth/enums/permission.enum';
+import { UploadQuery } from 'src/app/media/dto/media.dto';
 import { Media } from 'src/app/media/schemas/media.schema';
+import { Upload } from 'src/app/media/standard-api';
 
 @BusinessController('media')
 export class MediaController {
@@ -21,8 +21,8 @@ export class MediaController {
     private minioService: MinioService,
   ) {}
 
-  @ApiPermission([ApiAccessLevel.USER])
-  @StandardApi({ type: MediaModel })
+  @ApiPermission()
+  @StandardApi(Upload)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
   @ApiFile('file')
@@ -34,7 +34,7 @@ export class MediaController {
   ): Promise<Media> {
     const uploadedFile = await this.minioService.upload(
       {
-        bucket: Bucket.Storage,
+        bucket: query.bucket || Bucket.Public,
         fileName: query.filename,
         file,
         user,
@@ -42,8 +42,14 @@ export class MediaController {
       { sync: true },
     );
 
+    const access: string[] = query.bucket === Bucket.Public ? null : [user.id];
+
     const result = await this.mediaService.save(
-      { ...uploadedFile, fileName: query.filename || uploadedFile.fileName },
+      {
+        ...uploadedFile,
+        fileName: query.filename || uploadedFile.fileName,
+        access,
+      },
       user,
     );
 

@@ -13,6 +13,10 @@ export class Media extends Basic {
   @Prop({ type: Types.ObjectId, default: null })
   relatedId?: Types.ObjectId;
 
+  @IsStringField({ isArray: true })
+  @Prop({ type: [String], default: null })
+  access?: string[];
+
   @IsStringField()
   @Prop({ type: String, default: null })
   downloadLink?: string;

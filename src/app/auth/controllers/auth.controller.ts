@@ -2,7 +2,8 @@ import { Body, Get, Post } from '@nestjs/common';
 import {
   LoginUserDto,
   LoginUserModel,
-  RegisterUserDto,
+  SaveUserDto,
+  RegisterUserModel,
 } from 'src/app/auth/dto/auth.dto';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { BusinessController } from 'src/common/decorator/business-controller.decorator';
@@ -10,9 +11,9 @@ import { GetUser } from 'src/app/auth/decorators/get-user.decorator';
 import { StandardApi } from 'src/common/decorator/standard-api.decorator';
 import { ApiAccessLevel } from 'src/app/auth/enums/permission.enum';
 import { ApiPermission } from 'src/app/auth/decorators/permission.decorator';
-import { Types } from 'mongoose';
 import { Login, Me, Register } from 'src/app/auth/standard-api';
 import { User } from 'src/app/user/schemas/user.schema';
+import { Types } from 'mongoose';
 
 @BusinessController('auth')
 export class AuthController {
@@ -29,7 +30,7 @@ export class AuthController {
 
   @StandardApi(Register)
   @Post('/register')
-  async register(@Body() body: RegisterUserDto): Promise<User> {
+  async register(@Body() body: SaveUserDto): Promise<RegisterUserModel> {
     const result = await this.authService.register(body);
 
     return result;

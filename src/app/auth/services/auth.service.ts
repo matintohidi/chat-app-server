@@ -3,7 +3,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   LoginUserDto,
   LoginUserModel,
-  RegisterUserDto,
+  SaveUserDto,
+  RegisterUserModel,
 } from 'src/app/auth/dto/auth.dto';
 import { ErrorCode } from 'src/common/enums/error.enum';
 import * as bcrypt from 'bcrypt';
@@ -12,6 +13,10 @@ import { JwtService } from '@nestjs/jwt';
 import { Types } from 'mongoose';
 import { JwtPayload } from 'src/app/auth/dto/jwt.dto';
 import { User } from 'src/app/user/schemas/user.schema';
+import {
+  EXPIRES_IN_SET_PROFILE,
+  JWT_SECRET_SET_PROFILE,
+} from 'src/configs/app.config';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +32,7 @@ export class AuthService {
     return user;
   }
 
-  async register(data: RegisterUserDto): Promise<User> {
+  async register(data: SaveUserDto): Promise<RegisterUserModel> {
     const existUser = await this.userRepository.findOne({
       $or: [{ email: data.email }, { phoneNumber: data.phoneNumber }],
     });
@@ -42,7 +47,17 @@ export class AuthService {
 
     const user = await this.userService.create({ ...data, password });
 
-    return user;
+    const payload: JwtPayload = {
+      sub: user.id,
+      email: user.email,
+    };
+
+    const token = await this.jwtService.signAsync(payload, {
+      expiresIn: EXPIRES_IN_SET_PROFILE,
+      secret: JWT_SECRET_SET_PROFILE,
+    });
+
+    return { token, user };
   }
 
   async login(data: LoginUserDto): Promise<LoginUserModel> {
@@ -57,7 +72,7 @@ export class AuthService {
     }
 
     const payload: JwtPayload = {
-      sub: user._id as unknown as string,
+      sub: user.id,
       email: user.email,
     };
 

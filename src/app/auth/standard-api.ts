@@ -1,6 +1,6 @@
-import { UserModel } from 'src/app/user/dto/user.dto';
 import { StandardApiInterface } from '../../common/decorator/standard-api.decorator';
-import { LoginUserModel } from 'src/app/auth/dto/auth.dto';
+import { LoginUserModel, RegisterUserModel } from 'src/app/auth/dto/auth.dto';
+import { UserModel } from 'src/app/user/dto/user.dto';
 
 export const Me: StandardApiInterface = {
   type: UserModel,
@@ -11,7 +11,7 @@ export const Me: StandardApiInterface = {
 };
 
 export const Register: StandardApiInterface = {
-  type: UserModel,
+  type: RegisterUserModel,
   description: 'Register a new user with personal details and preferences',
   summary: 'Create a new user account',
   version: 1,

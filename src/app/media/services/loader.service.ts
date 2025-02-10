@@ -1,14 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { Media } from 'src/app/media/schemas/media.schema';
-import { API_URL, NODE_ENV } from 'src/configs/app.config';
+import {
+  MINIO_HOST,
+  MINIO_PORT,
+  API_URL,
+  NODE_ENV,
+} from 'src/configs/app.config';
 
 @Injectable()
 export class MediaLoaderService {
   urlHandler(relativeUrl: string) {
-    let urlPrefix = `${API_URL}/media/download`;
+    let urlPrefix = API_URL;
 
     if (NODE_ENV !== 'production') {
-      urlPrefix = `http://localhost:1337/media/download`;
+      urlPrefix = `http://${MINIO_HOST}:${MINIO_PORT}`;
     }
 
     if (relativeUrl?.[0] !== '/') {

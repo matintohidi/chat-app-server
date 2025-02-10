@@ -1,10 +1,16 @@
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleInit,
+} from '@nestjs/common';
 import { Client, ClientOptions, ItemBucketMetadata } from 'minio';
 import { Bucket } from 'src/plugins/minio/enums/minio.enum';
 import { UploadParam } from 'src/plugins/minio/interfaces/upload.interface';
 import { MINIO_CONFIG } from 'src/plugins/minio/types/constants';
 import * as crypto from 'crypto';
-import { SALT } from 'src/common/config/app.config';
+import { SALT } from 'src/configs/app.config';
 
 @Injectable()
 export class MinioService implements OnModuleInit {
@@ -21,13 +27,68 @@ export class MinioService implements OnModuleInit {
   }
 
   async init() {
-    const storageBucketExist = await this.minio.bucketExists(Bucket.Storage);
+    const privateBucketExist = await this.minio.bucketExists(Bucket.Private);
+    const publicBucketExist = await this.minio.bucketExists(Bucket.Public);
 
-    if (storageBucketExist) {
-      return;
+    if (!privateBucketExist) {
+      await this.minio.makeBucket(Bucket.Private, 'ir');
+
+      const privatePolicy = {
+        Version: '2012-10-17',
+        Statement: [
+          {
+            Effect: 'Allow',
+            Principal: { AWS: ['arn:aws:iam::account-id:root'] },
+            Action: [
+              's3:PutObject',
+              's3:AbortMultipartUpload',
+              's3:DeleteObject',
+              's3:GetObject',
+              's3:ListMultipartUploadParts',
+            ],
+            Resource: [`arn:aws:s3:::${Bucket.Private}/*`],
+          },
+          {
+            Effect: 'Deny',
+            Principal: '*',
+            Action: 's3:GetObject',
+            Resource: [`arn:aws:s3:::${Bucket.Private}/*`],
+          },
+        ],
+      };
+
+      await this.minio.setBucketPolicy(
+        Bucket.Private,
+        JSON.stringify(privatePolicy),
+      );
     }
 
-    await this.minio.makeBucket(Bucket.Storage, 'ir');
+    if (!publicBucketExist) {
+      await this.minio.makeBucket(Bucket.Public, 'ir');
+
+      const publicPolicy = {
+        Version: '2012-10-17',
+        Statement: [
+          {
+            Effect: 'Allow',
+            Principal: { AWS: ['*'] },
+            Action: [
+              's3:PutObject',
+              's3:AbortMultipartUpload',
+              's3:DeleteObject',
+              's3:ListMultipartUploadParts',
+              's3:GetObject',
+            ],
+            Resource: [`arn:aws:s3:::${Bucket.Public}/*`],
+          },
+        ],
+      };
+
+      await this.minio.setBucketPolicy(
+        Bucket.Public,
+        JSON.stringify(publicPolicy),
+      );
+    }
   }
 
   private async UploadToMinio(
@@ -84,6 +145,10 @@ export class MinioService implements OnModuleInit {
     };
   }
 
+  async getPreSignedUrl(filePath: string): Promise<string> {
+    return this.minio.presignedGetObject(Bucket.Private, filePath, 600);
+  }
+
   async upload(params: UploadParam, config?: { sync?: boolean }) {
     const { bucket, buffer, file, fileName, mimeType, user } = params;
 
@@ -111,7 +176,6 @@ export class MinioService implements OnModuleInit {
 
     try {
       const stat = await this.minio.statObject(bucket, minioSaveURL);
-
       if (stat.etag) {
         existAlready = true;
       }
@@ -127,7 +191,7 @@ export class MinioService implements OnModuleInit {
       }
     }
 
-    const result = {
+    return {
       bucket,
       ext,
       sha256,
@@ -137,7 +201,21 @@ export class MinioService implements OnModuleInit {
       relativeUrl: downloadURL,
       size: fileBuffer.length,
     };
+  }
 
-    return result;
+  async download(url: string) {
+    const splittedURL = url.split('/');
+    const path = splittedURL.slice(2, splittedURL.length).join('/');
+
+    const bucket: Bucket = splittedURL?.at(1) as any;
+
+    if (![Bucket.Private].includes(bucket)) {
+      throw new ForbiddenException('bucket is not allowed');
+    }
+
+    const meta = await this.minio.statObject(bucket, path);
+    const file = await this.minio.getObject(bucket, path);
+
+    return { meta, file };
   }
 }
