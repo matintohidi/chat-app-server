@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   LoginUserDto,
   LoginUserModel,
-  RegisterUserDto,
+  SaveUserDto,
   RegisterUserModel,
 } from 'src/app/auth/dto/auth.dto';
 import { ErrorCode } from 'src/common/enums/error.enum';
@@ -28,7 +28,7 @@ export class AuthService {
     return user;
   }
 
-  async register(data: RegisterUserDto): Promise<RegisterUserModel> {
+  async register(data: SaveUserDto): Promise<RegisterUserModel> {
     const existUser = await this.userRepository.findOne({
       $or: [{ email: data.email }, { phoneNumber: data.phoneNumber }],
     });

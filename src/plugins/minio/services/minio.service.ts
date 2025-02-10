@@ -149,19 +149,8 @@ export class MinioService implements OnModuleInit {
     return this.minio.presignedGetObject(Bucket.Private, filePath, 600);
   }
 
-  async upload(
-    params: UploadParam & { isPublic?: boolean },
-    config?: { sync?: boolean },
-  ) {
-    const {
-      bucket,
-      buffer,
-      file,
-      fileName,
-      mimeType,
-      user,
-      isPublic = false,
-    } = params;
+  async upload(params: UploadParam, config?: { sync?: boolean }) {
+    const { bucket, buffer, file, fileName, mimeType, user } = params;
 
     const fileBuffer = buffer || file.buffer;
 
@@ -181,7 +170,6 @@ export class MinioService implements OnModuleInit {
       sha256,
       userId: user?.id || 'undefined',
       ext,
-      isPublic: isPublic ? 'true' : 'false',
     };
 
     let existAlready = false;
@@ -212,7 +200,6 @@ export class MinioService implements OnModuleInit {
       mimetype: ContentType,
       relativeUrl: downloadURL,
       size: fileBuffer.length,
-      isPublic,
     };
   }
 

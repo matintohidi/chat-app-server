@@ -5,7 +5,7 @@ import {
   IsStringField,
 } from 'src/common/decorator/decorators';
 
-export class RegisterUserDto {
+export class SaveUserDto {
   @IsStringField({ required: true })
   name: string;
 

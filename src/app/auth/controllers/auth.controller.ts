@@ -2,7 +2,7 @@ import { Body, Get, Post } from '@nestjs/common';
 import {
   LoginUserDto,
   LoginUserModel,
-  RegisterUserDto,
+  SaveUserDto,
   RegisterUserModel,
 } from 'src/app/auth/dto/auth.dto';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -30,7 +30,7 @@ export class AuthController {
 
   @StandardApi(Register)
   @Post('/register')
-  async register(@Body() body: RegisterUserDto): Promise<RegisterUserModel> {
+  async register(@Body() body: SaveUserDto): Promise<RegisterUserModel> {
     const result = await this.authService.register(body);
 
     return result;

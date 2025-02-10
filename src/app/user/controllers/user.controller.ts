@@ -13,6 +13,8 @@ import { StandardApi } from 'src/common/decorator/standard-api.decorator';
 import { ApiFile } from 'src/plugins/minio/decorators/api-file.decorator';
 import { Bucket } from 'src/plugins/minio/enums/minio.enum';
 import { MinioService } from 'src/plugins/minio/services/minio.service';
+import * as sharp from 'sharp';
+import { Types } from 'mongoose';
 
 @BusinessController('user')
 export class UserController {
@@ -32,11 +34,17 @@ export class UserController {
     @GetUser() user: User,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    const resizedAndConvertedBuffer = await sharp(file.buffer)
+      .resize(1000, 1000, { withoutEnlargement: true })
+      .toFormat('webp')
+      .webp({ quality: 90 })
+      .toBuffer();
+
     const uploadedFile = await this.minioService.upload(
       {
         bucket: Bucket.Public,
-        fileName: user.name,
         file,
+        buffer: resizedAndConvertedBuffer,
         user,
       },
       {
@@ -44,14 +52,20 @@ export class UserController {
       },
     );
 
-    const result = await this.mediaService.save(
+    const media = await this.mediaService.save(
       {
         ...uploadedFile,
-        fileName: user.name || uploadedFile.fileName,
+        fileName: uploadedFile.fileName,
+        entity: 'user',
+        relatedId: user._id as Types.ObjectId,
       },
       user,
     );
 
-    return result;
+    const updatedUser = await this.userService.update(user, {
+      profile: media.url,
+    });
+
+    return updatedUser;
   }
 }
