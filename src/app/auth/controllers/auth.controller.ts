@@ -3,6 +3,7 @@ import {
   LoginUserDto,
   LoginUserModel,
   RegisterUserDto,
+  RegisterUserModel,
 } from 'src/app/auth/dto/auth.dto';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { BusinessController } from 'src/common/decorator/business-controller.decorator';
@@ -29,7 +30,7 @@ export class AuthController {
 
   @StandardApi(Register)
   @Post('/register')
-  async register(@Body() body: RegisterUserDto): Promise<User> {
+  async register(@Body() body: RegisterUserDto): Promise<RegisterUserModel> {
     const result = await this.authService.register(body);
 
     return result;

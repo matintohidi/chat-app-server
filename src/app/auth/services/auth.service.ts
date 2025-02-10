@@ -4,6 +4,7 @@ import {
   LoginUserDto,
   LoginUserModel,
   RegisterUserDto,
+  RegisterUserModel,
 } from 'src/app/auth/dto/auth.dto';
 import { ErrorCode } from 'src/common/enums/error.enum';
 import * as bcrypt from 'bcrypt';
@@ -27,7 +28,7 @@ export class AuthService {
     return user;
   }
 
-  async register(data: RegisterUserDto): Promise<User> {
+  async register(data: RegisterUserDto): Promise<RegisterUserModel> {
     const existUser = await this.userRepository.findOne({
       $or: [{ email: data.email }, { phoneNumber: data.phoneNumber }],
     });
@@ -49,7 +50,7 @@ export class AuthService {
 
     const token = await this.jwtService.signAsync(payload, { expiresIn: '5m' });
 
-    return user;
+    return { token, user };
   }
 
   async login(data: LoginUserDto): Promise<LoginUserModel> {

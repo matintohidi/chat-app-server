@@ -46,5 +46,5 @@ export class RegisterUserModel {
   token: string;
 
   @IsReferenceField({ type: UserModel })
-  user: UserModel;
+  user: User;
 }

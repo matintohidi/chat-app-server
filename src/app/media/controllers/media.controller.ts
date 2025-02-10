@@ -10,9 +10,10 @@ import { MinioService } from 'src/plugins/minio/services/minio.service';
 import { User } from 'src/app/user/schemas/user.schema';
 import { Bucket } from 'src/plugins/minio/enums/minio.enum';
 import { ApiFile } from 'src/plugins/minio/decorators/api-file.decorator';
-import { MediaModel, UploadQuery } from 'src/app/media/dto/media.dto';
+import { UploadQuery } from 'src/app/media/dto/media.dto';
 import { ApiAccessLevel } from 'src/app/auth/enums/permission.enum';
 import { Media } from 'src/app/media/schemas/media.schema';
+import { Upload } from 'src/app/media/standard-api';
 
 @BusinessController('media')
 export class MediaController {
@@ -22,7 +23,7 @@ export class MediaController {
   ) {}
 
   @ApiPermission([ApiAccessLevel.USER])
-  @StandardApi({ type: MediaModel })
+  @StandardApi(Upload)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
   @ApiFile('file')
