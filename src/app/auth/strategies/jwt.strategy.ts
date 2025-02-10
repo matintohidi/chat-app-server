@@ -4,10 +4,14 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayload } from 'src/app/auth/dto/jwt.dto';
 import { UserRepository } from 'src/app/user/repositories/user.repository';
 import { User } from 'src/app/user/schemas/user.schema';
+import { AuthStrategies } from 'src/app/auth/enums/jwt.enum';
 const { JWT_SECRET } = process.env;
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(
+  Strategy,
+  AuthStrategies.JWT,
+) {
   constructor(private userRepository: UserRepository) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

@@ -64,7 +64,7 @@ export class BusinessRepository<Schema extends Basic> {
       ...clearedData,
     });
 
-    return await this.findOne({ id: savedEntity.id });
+    return await this.findOne({ _id: savedEntity._id });
   }
 
   async updateById(

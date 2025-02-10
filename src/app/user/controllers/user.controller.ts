@@ -15,6 +15,7 @@ import { Bucket } from 'src/plugins/minio/enums/minio.enum';
 import { MinioService } from 'src/plugins/minio/services/minio.service';
 import * as sharp from 'sharp';
 import { Types } from 'mongoose';
+import { AuthStrategies } from 'src/app/auth/enums/jwt.enum';
 
 @BusinessController('user')
 export class UserController {
@@ -24,7 +25,9 @@ export class UserController {
     private mediaService: MediaService,
   ) {}
 
-  @ApiPermission([ApiAccessLevel.USER])
+  @ApiPermission([ApiAccessLevel.USER], {
+    authStrategy: AuthStrategies.JWT_SET_PROFILE,
+  })
   @StandardApi(UploadProfile)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))

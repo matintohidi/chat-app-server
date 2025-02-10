@@ -7,7 +7,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from 'src/app/auth/auth.module';
 import { MinioModule } from 'src/plugins/minio/minio.module';
-import { minioConfig } from 'src/common/config/minio.config';
+import { minioConfig } from 'src/configs/minio.config';
 import { MediaModule } from 'src/app/media/media.module';
 
 @Module({

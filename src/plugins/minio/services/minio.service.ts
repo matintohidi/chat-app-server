@@ -10,7 +10,7 @@ import { Bucket } from 'src/plugins/minio/enums/minio.enum';
 import { UploadParam } from 'src/plugins/minio/interfaces/upload.interface';
 import { MINIO_CONFIG } from 'src/plugins/minio/types/constants';
 import * as crypto from 'crypto';
-import { SALT } from 'src/common/config/app.config';
+import { SALT } from 'src/configs/app.config';
 
 @Injectable()
 export class MinioService implements OnModuleInit {
