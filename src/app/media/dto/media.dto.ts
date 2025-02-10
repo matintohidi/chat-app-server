@@ -1,15 +1,26 @@
 import { BasicModel } from 'src/app/base/basic.dto';
 import { MediaEntity } from 'src/app/media/schemas/media.schema';
-import { IsNumberField, IsStringField } from 'src/common/decorator/decorators';
+import {
+  IsEnumField,
+  IsNumberField,
+  IsStringField,
+} from 'src/common/decorator/decorators';
+import { Bucket } from 'src/plugins/minio/enums/minio.enum';
 
 export class UploadQuery {
   @IsStringField()
-  filename: string;
+  filename?: string;
+
+  @IsEnumField({ type: Bucket })
+  bucket?: Bucket;
 }
 
 export class MediaModel extends BasicModel {
   @IsStringField()
   relatedId?: string;
+
+  @IsStringField({ isArray: true })
+  access?: string[];
 
   @IsStringField()
   downloadLink?: string;

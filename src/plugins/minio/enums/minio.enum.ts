@@ -1,3 +1,4 @@
 export enum Bucket {
-  Storage = 'storage',
+  Public = 'public',
+  Private = 'private',
 }

@@ -14,5 +14,6 @@ import { MinioModule } from 'src/plugins/minio/minio.module';
   ],
   controllers: [MediaController],
   providers: [MediaService, MediaRepository, MediaLoaderService],
+  exports: [MediaService],
 })
 export class MediaModule {}
