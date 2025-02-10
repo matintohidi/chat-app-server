@@ -5,7 +5,7 @@ import { JwtPayload } from 'src/app/auth/dto/jwt.dto';
 import { UserRepository } from 'src/app/user/repositories/user.repository';
 import { User } from 'src/app/user/schemas/user.schema';
 import { AuthStrategies } from 'src/app/auth/enums/jwt.enum';
-const { JWT_SECRET } = process.env;
+import { JWT_SECRET } from 'src/configs/app.config';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(

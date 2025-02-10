@@ -13,7 +13,11 @@ import { JwtService } from '@nestjs/jwt';
 import { Types } from 'mongoose';
 import { JwtPayload } from 'src/app/auth/dto/jwt.dto';
 import { User } from 'src/app/user/schemas/user.schema';
-const { JWT_SECRET_SET_PROFILE } = process.env;
+import {
+  EXPIRES_IN_SET_PROFILE,
+  JWT_SECRET_SET_PROFILE,
+} from 'src/configs/app.config';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -49,7 +53,7 @@ export class AuthService {
     };
 
     const token = await this.jwtService.signAsync(payload, {
-      expiresIn: '5m',
+      expiresIn: EXPIRES_IN_SET_PROFILE,
       secret: JWT_SECRET_SET_PROFILE,
     });
 
