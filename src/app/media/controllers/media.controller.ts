@@ -1,4 +1,4 @@
-import { BusinessController } from 'src/common/decorator/business-controller.decorator';
+import { BasicController } from 'src/common/decorator/basic-controller.decorator';
 import { MediaService } from 'src/app/media/services/media.service';
 import { GetUser } from 'src/app/auth/decorators/get-user.decorator';
 import { Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
@@ -14,7 +14,7 @@ import { UploadQuery } from 'src/app/media/dto/media.dto';
 import { Media } from 'src/app/media/schemas/media.schema';
 import { Upload } from 'src/app/media/standard-api';
 
-@BusinessController('media')
+@BasicController('media')
 export class MediaController {
   constructor(
     private mediaService: MediaService,

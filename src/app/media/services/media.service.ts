@@ -4,7 +4,7 @@ import { MediaRepository } from 'src/app/media/repositories/media.repository';
 import { User } from 'src/app/user/schemas/user.schema';
 import { MediaLoaderService } from 'src/app/media/services/loader.service';
 import { FilterQuery, Types } from 'mongoose';
-import { CustomSaveOptions } from 'src/app/base/business.repository';
+import { CustomSaveOptions } from 'src/app/base/basic.repository';
 
 @Injectable()
 export class MediaService {

@@ -6,7 +6,7 @@ import { FilterQuery, Model } from 'mongoose';
 import {
   BusinessRepository,
   CustomSaveOptions,
-} from 'src/app/base/business.repository';
+} from 'src/app/base/basic.repository';
 import { Media } from 'src/app/media/schemas/media.schema';
 
 export class MediaRepository extends BusinessRepository<Media> {

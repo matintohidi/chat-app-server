@@ -2,7 +2,7 @@ import { IsStringField } from 'src/common/decorator/decorators';
 
 export class BasicModel {
   @IsStringField()
-  id?: string;
+  _id?: string;
 
   @IsStringField()
   createdById?: string;

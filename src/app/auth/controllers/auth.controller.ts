@@ -6,7 +6,7 @@ import {
   RegisterUserModel,
 } from 'src/app/auth/dto/auth.dto';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { BusinessController } from 'src/common/decorator/business-controller.decorator';
+import { BasicController } from 'src/common/decorator/basic-controller.decorator';
 import { GetUser } from 'src/app/auth/decorators/get-user.decorator';
 import { StandardApi } from 'src/common/decorator/standard-api.decorator';
 import { ApiAccessLevel } from 'src/app/auth/enums/permission.enum';
@@ -15,7 +15,7 @@ import { Login, Me, Register } from 'src/app/auth/standard-api';
 import { User } from 'src/app/user/schemas/user.schema';
 import { Types } from 'mongoose';
 
-@BusinessController('auth')
+@BasicController('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -31,6 +31,7 @@ export class AuthController {
   @StandardApi(Register)
   @Post('/register')
   async register(@Body() body: SaveUserDto): Promise<RegisterUserModel> {
+    console.log(body);
     const result = await this.authService.register(body);
 
     return result;

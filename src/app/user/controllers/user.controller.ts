@@ -8,7 +8,7 @@ import { MediaService } from 'src/app/media/services/media.service';
 import { User } from 'src/app/user/schemas/user.schema';
 import { UserService } from 'src/app/user/services/user.service';
 import { UploadProfile } from 'src/app/user/standard-api';
-import { BusinessController } from 'src/common/decorator/business-controller.decorator';
+import { BasicController } from 'src/common/decorator/basic-controller.decorator';
 import { StandardApi } from 'src/common/decorator/standard-api.decorator';
 import { ApiFile } from 'src/plugins/minio/decorators/api-file.decorator';
 import { Bucket } from 'src/plugins/minio/enums/minio.enum';
@@ -17,7 +17,7 @@ import * as sharp from 'sharp';
 import { Types } from 'mongoose';
 import { AuthStrategies } from 'src/app/auth/enums/jwt.enum';
 
-@BusinessController('user')
+@BasicController('user')
 export class UserController {
   constructor(
     private userService: UserService,

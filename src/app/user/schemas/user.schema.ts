@@ -8,9 +8,6 @@ export type UserDocument = User & Document;
 
 @Schema({ versionKey: false })
 export class User extends Basic {
-  @IsStringField()
-  id?: string;
-
   @IsStringField({ required: true })
   @Prop({ required: true, type: String, minlength: 3, maxlength: 20 })
   name: string;

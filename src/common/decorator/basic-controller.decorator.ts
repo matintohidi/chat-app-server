@@ -7,7 +7,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ValidateDto } from './validate-dto.decorator';
 
-export const BusinessController = (route: string, name?: string) => {
+export const BasicController = (route: string, name?: string) => {
   return applyDecorators(
     ApiBearerAuth(),
     UseInterceptors(ClassSerializerInterceptor),
