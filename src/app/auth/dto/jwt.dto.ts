@@ -1,9 +1,9 @@
 import { IsStringField } from 'src/common/decorator/decorators';
 
 export class JwtPayload {
-  @IsStringField({ required: true })
+  @IsStringField()
   email: string;
 
-  @IsStringField({ required: true })
+  @IsStringField()
   sub: string;
 }

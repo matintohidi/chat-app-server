@@ -1,23 +1,36 @@
-import { IsEnumField, IsStringField } from 'src/common/decorator/decorators';
+import {
+  IsEnumField,
+  IsReferenceField,
+  IsStringField,
+} from 'src/common/decorator/decorators';
 import { ApiAccessLevel } from 'src/app/auth/enums/permission.enum';
 import { BasicModel } from 'src/app/base/basic.dto';
+import { User } from 'src/app/user/schemas/user.schema';
 
 export class UserModel extends BasicModel {
-  @IsStringField({ required: true })
+  @IsStringField()
   name: string;
 
-  @IsStringField({ required: true })
+  @IsStringField()
   email: string;
 
-  @IsStringField({ required: true })
-  phoneNumber: string;
+  @IsStringField()
+  phoneNumber?: string;
 
   @IsEnumField({ type: ApiAccessLevel })
   accessLevel: ApiAccessLevel;
 
-  @IsStringField()
+  @IsStringField({ required: false })
   profile?: string;
 
-  @IsStringField()
+  @IsStringField({ required: false })
   city?: string;
+}
+
+export class SetProfileModel {
+  @IsReferenceField({ type: UserModel })
+  user: User;
+
+  @IsStringField()
+  token: string;
 }

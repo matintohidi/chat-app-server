@@ -44,14 +44,11 @@ export class MediaController {
 
     const access: string[] = query.bucket === Bucket.Public ? null : [user.id];
 
-    const result = await this.mediaService.save(
-      {
-        ...uploadedFile,
-        fileName: query.filename || uploadedFile.fileName,
-        access,
-      },
-      user,
-    );
+    const result = await this.mediaService.save({
+      ...uploadedFile,
+      fileName: query.filename || uploadedFile.fileName,
+      access,
+    });
 
     return result;
   }

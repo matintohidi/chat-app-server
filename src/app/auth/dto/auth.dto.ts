@@ -5,23 +5,34 @@ import {
   IsStringField,
 } from 'src/common/decorator/decorators';
 
-export class SaveUserDto {
-  @IsStringField({ required: true })
+export class CreateUserDto {
+  @IsStringField()
   name: string;
 
-  @IsStringField({ required: true })
+  @IsStringField()
   email: string;
 
-  @IsStringField({ required: true })
-  phoneNumber: string;
-
-  @IsStringField({ required: true })
-  password: string;
-
   @IsStringField()
+  password: string;
+}
+
+export class UpdateUserDto {
+  @IsStringField({ required: false })
+  name?: string;
+
+  @IsStringField({ required: false })
+  email: string;
+
+  @IsStringField({ required: false })
+  phoneNumber?: string;
+
+  @IsStringField({ required: false })
+  password?: string;
+
+  @IsStringField({ required: false })
   profile?: string;
 
-  @IsStringField()
+  @IsStringField({ required: false })
   city?: string;
 }
 

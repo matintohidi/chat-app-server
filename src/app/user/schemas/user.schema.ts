@@ -17,12 +17,12 @@ export class User extends Basic {
   email: string;
 
   @IsStringField({ required: true })
-  @Prop({ required: true, type: String, unique: true })
-  phoneNumber: string;
+  @Prop({ type: String, default: null })
+  phoneNumber?: string;
 
   @IsStringField({ required: true })
   @Exclude()
-  @Prop({ required: true, type: String, minlength: 8, select: false })
+  @Prop({ required: true, type: String, minlength: 8 })
   password: string;
 
   @IsEnumField({ type: ApiAccessLevel })
@@ -39,8 +39,3 @@ export class User extends Basic {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-// UserSchema.pre(/^find/, function (next) {
-//   this.$where = { deletedAt: null };
-//   next();
-// });

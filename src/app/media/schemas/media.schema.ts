@@ -7,13 +7,11 @@ export type MediaEntity = 'user' | 'message';
 
 @Schema({ versionKey: false })
 export class Media extends Basic {
-  @IsStringField()
   url?: string;
 
   @Prop({ type: Types.ObjectId, default: null })
   relatedId?: Types.ObjectId;
 
-  @IsStringField({ isArray: true })
   @Prop({ type: [String], default: null })
   access?: string[];
 

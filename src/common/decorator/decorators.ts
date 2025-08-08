@@ -68,7 +68,7 @@ export function IsBooleanField(params?: {
 }) {
   return function (target: any, propertyKey: string) {
     params ||= {};
-    params.required = params.required ?? false;
+    params.required = params.required ?? true;
     const { isArray } = getPropMetaData(params, target, propertyKey);
 
     Expose()(target, propertyKey);
@@ -98,7 +98,7 @@ export function IsDateField(params?: {
 }) {
   return function (target: any, propertyKey: string) {
     params ||= {};
-    params.required = params.required ?? false;
+    params.required = params.required ?? true;
     const { isArray } = getPropMetaData(params, target, propertyKey);
 
     ApiProperty({ type: Date, required: params.required, isArray })(
@@ -124,7 +124,7 @@ export function IsEnumField(params: {
     const { isArray, type } = getPropMetaData(params, target, propertyKey);
 
     params ||= { type };
-    params.required = params.required ?? false;
+    params.required = params.required ?? true;
 
     ApiProperty({
       enum: type,
@@ -152,7 +152,7 @@ export function IsStringField(params?: {
 }) {
   return function (target: any, propertyKey: string): void {
     params ||= {};
-    params.required = params.required ?? false;
+    params.required = params.required ?? true;
     const { isArray } = getPropMetaData(params, target, propertyKey);
 
     ApiProperty({ type: String, required: params.required, isArray })(
@@ -176,7 +176,7 @@ export function IsReferenceField(params?: {
 }) {
   return function (target: any, propertyKey: string): void {
     const { isArray, type } = getPropMetaData(params, target, propertyKey);
-    const required = params?.required ?? false;
+    const required = params?.required ?? true;
 
     ApiProperty({ type, isArray, required })(target, propertyKey);
     Type(() => type)(target, propertyKey);

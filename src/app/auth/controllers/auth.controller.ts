@@ -1,8 +1,8 @@
 import { Body, Get, Post } from '@nestjs/common';
 import {
+  CreateUserDto,
   LoginUserDto,
   LoginUserModel,
-  SaveUserDto,
   RegisterUserModel,
 } from 'src/app/auth/dto/auth.dto';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -15,7 +15,7 @@ import { Login, Me, Register } from 'src/app/auth/standard-api';
 import { User } from 'src/app/user/schemas/user.schema';
 import { Types } from 'mongoose';
 
-@BasicController('auth')
+@BasicController('/auth/user')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -30,8 +30,7 @@ export class AuthController {
 
   @StandardApi(Register)
   @Post('/register')
-  async register(@Body() body: SaveUserDto): Promise<RegisterUserModel> {
-    console.log(body);
+  async register(@Body() body: CreateUserDto): Promise<RegisterUserModel> {
     const result = await this.authService.register(body);
 
     return result;

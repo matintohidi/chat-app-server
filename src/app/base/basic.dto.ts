@@ -1,24 +1,19 @@
+import { Types } from 'mongoose';
 import { IsStringField } from 'src/common/decorator/decorators';
 
 export class BasicModel {
   @IsStringField()
-  _id?: string;
+  _id?: Types.ObjectId;
 
   @IsStringField()
-  createdById?: string;
+  createdById?: Types.ObjectId;
 
   @IsStringField()
-  updatedById?: string;
-
-  @IsStringField()
-  deletedById?: string;
+  updatedById?: Types.ObjectId;
 
   @IsStringField()
   createdAt?: string;
 
   @IsStringField()
   updatedAt?: string;
-
-  @IsStringField()
-  deletedAt?: string;
 }

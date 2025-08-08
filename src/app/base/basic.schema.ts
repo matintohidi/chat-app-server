@@ -12,10 +12,6 @@ export class Basic extends Document {
   @Prop({ type: Types.ObjectId, default: null })
   updatedById?: Types.ObjectId; // reference to userId
 
-  @IsNumberField()
-  @Prop({ type: Types.ObjectId, default: null })
-  deletedById?: Types.ObjectId; // reference to userId
-
   @IsDateField()
   @Prop({ required: true, type: Date, default: Date.now })
   createdAt: Date;
@@ -23,8 +19,4 @@ export class Basic extends Document {
   @IsDateField()
   @Prop({ type: Date, default: Date.now })
   updatedAt?: Date;
-
-  @IsDateField()
-  @Prop({ type: Date, default: null })
-  deletedAt?: Date;
 }

@@ -2,8 +2,9 @@ import { IsEnumField } from 'src/common/decorator/decorators';
 
 // enum values in persian
 export enum ErrorCode {
-  UserWithThisEmailOrPhoneNumberAlreadyExists = 'کاربری با این ایمیل یا شماره تلفن قبلا ثبت شده است',
-  PasswordIsNotMatch = 'رمز عبور اشتباه است',
+  UserNotFound = 'User not found',
+  UserWithThisEmailAlreadyExists = 'User with this email already exists',
+  PasswordOrEmailIsNotMatch = 'Password or email is not match',
 }
 
 export class ErrorMessages {
