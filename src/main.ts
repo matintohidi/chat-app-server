@@ -6,6 +6,7 @@ import { enableSwagger } from './plugins/swagger';
 import helmet from 'helmet';
 import { useContainer } from 'class-validator';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { CORS_ORIGIN } from 'src/configs/app.config';
 const { HELMET_ENABLE, SWAGGER_ENABLE, APP_PORT } = process.env;
 
 const logger = new Logger('app');
@@ -30,7 +31,11 @@ async function bootstrap() {
     }),
   );
 
-  app.enableCors();
+  app.enableCors({
+    origin: CORS_ORIGIN,
+    methods: '*',
+    credentials: true,
+  });
 
   if (HELMET_ENABLE === 'true') {
     app.use(helmet());

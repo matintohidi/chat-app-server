@@ -10,3 +10,5 @@ export const JWT_SECRET_SET_PROFILE =
   process.env.JWT_SECRET_SET_PROFILE || 'jwt_secret_set_profile';
 export const EXPIRES_IN_SET_PROFILE =
   process.env.EXPIRES_IN_SET_PROFILE || '5m';
+
+export const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
