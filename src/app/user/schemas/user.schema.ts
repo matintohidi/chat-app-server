@@ -17,7 +17,7 @@ export class User extends Basic {
   email: string;
 
   @IsStringField({ required: true })
-  @Prop({ type: String, default: null })
+  @Prop({ type: String, default: null, unique: false })
   phoneNumber?: string;
 
   @IsStringField({ required: true })
