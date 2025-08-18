@@ -6,7 +6,8 @@ import { enableSwagger } from './plugins/swagger';
 import helmet from 'helmet';
 import { useContainer } from 'class-validator';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { CORS_ORIGIN } from 'src/configs/app.config';
+import { API_URL, CORS_ORIGIN } from 'src/configs/app.config';
+import { minioConfig } from 'src/configs/minio.config';
 const { HELMET_ENABLE, SWAGGER_ENABLE, APP_PORT } = process.env;
 
 const logger = new Logger('app');
@@ -51,7 +52,10 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  logger.verbose(`server started on  http://localhost:${PORT}`);
-  logger.verbose(`swagger is available on http://localhost:${PORT}/swagger`);
+  logger.verbose(`server started on ${API_URL}`);
+  logger.verbose(`swagger is available on ${API_URL}/swagger`);
+  logger.debug(
+    `Minio is available on ${minioConfig.useSSL ? 'https' : 'http'}://${minioConfig.endPoint}:${minioConfig.port}`,
+  );
 }
 bootstrap();
