@@ -85,8 +85,25 @@ export class UserController {
   @Post('set-profile')
   async setProfile(
     @GetUser() user: User,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file?: Express.Multer.File,
   ): Promise<SetProfileModel> {
+    const payload: JwtPayload = {
+      sub: user.id,
+      email: user.email,
+    };
+
+    const token = await this.jwtService.signAsync(payload, {
+      expiresIn: EXPIRES_IN,
+      secret: JWT_SECRET,
+    });
+
+    if (!file) {
+      return {
+        token,
+        user,
+      };
+    }
+
     const resizedAndConvertedBuffer = await sharp(file.buffer)
       .resize(1000, 1000, { withoutEnlargement: true })
       .toFormat('webp')
@@ -118,16 +135,6 @@ export class UserController {
         profile: media.url,
       },
     );
-
-    const payload: JwtPayload = {
-      sub: user.id,
-      email: user.email,
-    };
-
-    const token = await this.jwtService.signAsync(payload, {
-      expiresIn: EXPIRES_IN,
-      secret: JWT_SECRET,
-    });
 
     return {
       token,
